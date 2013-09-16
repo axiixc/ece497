@@ -10,6 +10,7 @@
 #define BoardTypes_h
 
 typedef enum {
+    BoardDirectionInvalid = -1,
     BoardDirectionNorth,
     BoardDirectionEast,
     BoardDirectionSouth,

@@ -15,13 +15,13 @@ InputSourceDelegateDuplexer::InputSourceDelegateDuplexer()
 
 void InputSourceDelegateDuplexer::receivedClearEvent(InputSource& inputSource)
 {
-    for (auto listener = m_listeners.begin(); listener != m_listeners.end(); ++listener)
+    for (std::vector<InputSourceDelegate*>::iterator listener = m_listeners.begin(); listener != m_listeners.end(); ++listener)
         if (*listener) (*listener)->receivedClearEvent(inputSource);
 }
 
 void InputSourceDelegateDuplexer::recievedMoveEvent(InputSource& inputSource, BoardDirection direction)
 {
-    for (auto listener = m_listeners.begin(); listener != m_listeners.end(); ++listener)
+    for (std::vector<InputSourceDelegate*>::iterator listener = m_listeners.begin(); listener != m_listeners.end(); ++listener)
         if (*listener) (*listener)->recievedMoveEvent(inputSource, direction);
 }
 

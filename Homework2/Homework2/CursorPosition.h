@@ -22,7 +22,7 @@ public:
     inline int y() { return std::get<1>(*this); };
     
     CursorPosition& move(BoardDirection direction);
-    inline bool isInsideBounds(size_t bounds) { return x() >= 0 && y() >= 0 && x() < bounds && y() < bounds; };
+    inline bool isInsideBounds(int bounds) { return x() >= 0 && y() >= 0 && x() < bounds && y() < bounds; };
     inline bool isPoint(int _x, int _y) { return x() == _x && y() == _y; };
 };
 

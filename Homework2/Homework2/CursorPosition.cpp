@@ -25,5 +25,6 @@ CursorPosition& CursorPosition::move(BoardDirection direction)
         case BoardDirectionEast:  return *new CursorPosition(x(), y() + 1);
         case BoardDirectionSouth: return *new CursorPosition(x() + 1, y());
         case BoardDirectionWest:  return *new CursorPosition(x(), y() - 1);
+        case BoardDirectionInvalid: return *this;
     }
 }

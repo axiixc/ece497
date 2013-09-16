@@ -23,7 +23,7 @@ void BoardWriterConsole::updateDisplay()
     wclear(window);
     for (int yIdx = 0; yIdx < m_data.size(); ++yIdx)
     {
-        auto row = m_data[yIdx];
+        std::vector<BoardPositionState> row = m_data[yIdx];
         for (int xIdx = 0; xIdx < row.size(); ++xIdx)
         {
             wmove(window, xIdx, yIdx * 2);
