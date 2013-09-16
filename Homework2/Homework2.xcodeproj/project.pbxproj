@@ -16,7 +16,6 @@
 		B355A40117E6B9BC00D09E08 /* InputSourceGPIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A3F717E6B9BC00D09E08 /* InputSourceGPIO.cpp */; };
 		B355A40217E6B9BC00D09E08 /* InputSourceKeyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A3F917E6B9BC00D09E08 /* InputSourceKeyboard.cpp */; };
 		B355A40317E6B9BC00D09E08 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A3FB17E6B9BC00D09E08 /* main.cpp */; };
-		B355A40617E6BFC100D09E08 /* BoardWriterGPIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A40417E6BFC100D09E08 /* BoardWriterGPIO.cpp */; };
 		B3F2141717E50B0500ED5F22 /* libncurses.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F2141617E50B0500ED5F22 /* libncurses.dylib */; };
 /* End PBXBuildFile section */
 
@@ -51,8 +50,6 @@
 		B355A3F917E6B9BC00D09E08 /* InputSourceKeyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputSourceKeyboard.cpp; path = Homework2/InputSourceKeyboard.cpp; sourceTree = SOURCE_ROOT; };
 		B355A3FA17E6B9BC00D09E08 /* InputSourceKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputSourceKeyboard.h; path = Homework2/InputSourceKeyboard.h; sourceTree = SOURCE_ROOT; };
 		B355A3FB17E6B9BC00D09E08 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = Homework2/main.cpp; sourceTree = SOURCE_ROOT; };
-		B355A40417E6BFC100D09E08 /* BoardWriterGPIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoardWriterGPIO.cpp; sourceTree = SOURCE_ROOT; };
-		B355A40517E6BFC100D09E08 /* BoardWriterGPIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardWriterGPIO.h; sourceTree = SOURCE_ROOT; };
 		B3F213F717E50AD500ED5F22 /* Homework 2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Homework 2"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3F2141617E50B0500ED5F22 /* libncurses.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libncurses.dylib; path = usr/lib/libncurses.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -105,8 +102,6 @@
 				B355A3EE17E6B9BC00D09E08 /* BoardWriter.h */,
 				B355A3EF17E6B9BC00D09E08 /* BoardWriterConsole.cpp */,
 				B355A3F017E6B9BC00D09E08 /* BoardWriterConsole.h */,
-				B355A40417E6BFC100D09E08 /* BoardWriterGPIO.cpp */,
-				B355A40517E6BFC100D09E08 /* BoardWriterGPIO.h */,
 				B355A3F117E6B9BC00D09E08 /* ConsoleSupport.cpp */,
 				B355A3F217E6B9BC00D09E08 /* ConsoleSupport.h */,
 				B355A3F317E6B9BC00D09E08 /* CursorPosition.cpp */,
@@ -174,7 +169,6 @@
 			files = (
 				B355A3FD17E6B9BC00D09E08 /* BoardWriterConsole.cpp in Sources */,
 				B355A3FC17E6B9BC00D09E08 /* BoardWriter.cpp in Sources */,
-				B355A40617E6BFC100D09E08 /* BoardWriterGPIO.cpp in Sources */,
 				B355A40117E6B9BC00D09E08 /* InputSourceGPIO.cpp in Sources */,
 				B355A3FE17E6B9BC00D09E08 /* ConsoleSupport.cpp in Sources */,
 				B355A40317E6B9BC00D09E08 /* main.cpp in Sources */,

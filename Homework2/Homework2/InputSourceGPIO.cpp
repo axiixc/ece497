@@ -47,7 +47,7 @@ bool processingEvents = false;
 
 InputSourceGPIO::InputSourceGPIO(InputSourceDelegate& delegate)
 : InputSource(delegate)
-, m_pinDescriptors(sizeof(GPIOPins) + 1)
+, m_pinDescriptors(0)
 {
 }
 
@@ -64,14 +64,9 @@ void InputSourceGPIO::startRecievingInputEvents()
 
 void InputSourceGPIO::turnRunLoop()
 {
-    if (!processingEvents)
-    {
-        performPollTeardown();
-        return;
-    }
-    
-    performPoll();
-    turnRunLoop();
+    while (processingEvents)
+        performPoll();
+    performPollTeardown();
 }
 
 void InputSourceGPIO::performPollSetup()
@@ -80,10 +75,10 @@ void InputSourceGPIO::performPollSetup()
     
     std::signal(SIGINT, &handleSignal);
     
-    m_pinDescriptors.clear();
+    m_pinDescriptors = (struct pollfd *) malloc(sizeof(struct pollfd) * 5);
     m_pinDescriptors[0] = { .fd = STDIN_FILENO, .events = POLLIN };
     
-    for (unsigned idx = 0; idx < sizeof(GPIOPins); ++idx)
+    for (unsigned idx = 0; idx < 4; ++idx)
     {
         unsigned port = GPIOPins[idx];
         gpio_export(port);
@@ -99,38 +94,41 @@ void InputSourceGPIO::performPollSetup()
 void InputSourceGPIO::performPoll()
 {
     static int const PollTimeout = 3000; // 3 seconds
-    int returnCode = poll(&m_pinDescriptors[0], static_cast<nfds_t>(m_pinDescriptors.size()), PollTimeout);
+    int numberOfEvents = poll(m_pinDescriptors, 5, PollTimeout);
     
-    if (returnCode < 0)
+    if (numberOfEvents < 0)
     {
-        printf("poll() failed with error %d\n", errno);
+        fprintf(stderr, "poll() failed with error %d\n", errno);
         exit(errno);
     }
-    else if (returnCode == 0)
+    
+    if (numberOfEvents == 0)
         return;
-    else
+    
+    for (unsigned idx = 1; idx < 5; ++idx)
     {
-        for (unsigned idx = 1; idx < m_pinDescriptors.size(); ++idx)
-        {
-            struct pollfd gpio = m_pinDescriptors[idx];
-            if (!(gpio.revents & POLLPRI))
-                return;
-            
-            lseek(gpio.fd, 0, SEEK_SET);
-            char buffer[MAX_BUF];
-            read(gpio.fd, buffer, sizeof(buffer));
-            
-            const char HighValue[] = "1";
-            if (0 == strncmp(HighValue, buffer, sizeof(HighValue)))
-                return;
-            
-            fflush(stdout);
-        }
+        fprintf(stderr, "check pin %u \n", idx);
+        struct pollfd gpio = m_pinDescriptors[idx];
+        if (!(gpio.revents & POLLPRI))
+            continue;
+        
+        lseek(gpio.fd, 0, SEEK_SET);
+        char buffer[MAX_BUF];
+        read(gpio.fd, buffer, sizeof(buffer));
+        
+        fprintf(stderr, "Read %s", buffer);
+        
+        if ('0' != buffer[0])
+            continue;
+        
+        // NOTE: Off-by-one between fdarray and GPIOPins, swap stdin to pos 4 to fix
+        fprintf(stderr, "Pushed pin %u\n", GPIOPins[idx-1]);
+        m_delegate.recievedMoveEvent(*this, translatePinToDirection(GPIOPins[idx-1]));
     }
 }
 
 void InputSourceGPIO::performPollTeardown()
 {
-    for (unsigned idx = 1; idx < m_pinDescriptors.size(); ++idx)
+    for (unsigned idx = 1; idx < 5; ++idx)
         gpio_fd_close(m_pinDescriptors[idx].fd);
 }

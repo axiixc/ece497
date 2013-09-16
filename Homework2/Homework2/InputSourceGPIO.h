@@ -21,7 +21,7 @@ public:
     virtual void startRecievingInputEvents();
     
 private:
-    std::vector<struct pollfd> m_pinDescriptors;
+    struct pollfd *m_pinDescriptors;
     
     void turnRunLoop();
     
