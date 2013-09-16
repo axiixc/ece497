@@ -7,13 +7,19 @@
 //
 
 #include "BoardWriterConsole.h"
+#include "BoardWriterGPIO.h"
+#include "InputSourceGPIO.h"
 #include "InputSourceKeyboard.h"
 
-int main(int argc, const char * argv[])
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, const char **argv)
 {
-    BoardWriter& writer = BoardWriter::create<BoardWriterConsole>();
-    InputSource& inputSource = InputSource::create<InputSourceKeyboard>(writer);
-    inputSource.startRecievingInputEvents();
+    if (argc == 2 && strncmp("--keyboard", argv[1], strlen("--keyboard")) == 0)
+        InputSource::create<InputSourceKeyboard>(BoardWriter::create<BoardWriterConsole>()).startRecievingInputEvents();
+    else
+        InputSource::create<InputSourceGPIO>(BoardWriter::create<BoardWriterGPIO>()).startRecievingInputEvents();
     
     return 0;
 }
