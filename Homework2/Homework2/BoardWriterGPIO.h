@@ -6,9 +6,21 @@
 //  Copyright (c) 2013 James Savage <me@axiixc.com>. All rights reserved.
 //
 
-#ifndef __Homework2__BoardWriterGPIO__
-#define __Homework2__BoardWriterGPIO__
+#ifndef BoardWriterGPIO_h
+#define BoardWriterGPIO_h
 
-#include <iostream>
+#include "BoardWriter.h"
 
-#endif /* defined(__Homework2__BoardWriterGPIO__) */
+class BoardWriterGPIO : public BoardWriter {
+public:
+    BoardWriterGPIO();
+    
+    void recievedMoveEvent(InputSource&, BoardDirection);
+    
+protected:
+    virtual void updateDisplay();
+    void clearAllLEDs();
+    void turnOnLED(unsigned);
+};
+
+#endif /* BoardWriterGPIO_h */
