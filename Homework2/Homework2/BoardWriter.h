@@ -17,7 +17,7 @@
 
 class BoardWriter : public InputSourceDelegate {
 public:
-    template <class T> static T& create()
+    template <class T> static BoardWriter& create()
     {
         BoardWriter& writer = *new T();
         writer.resetBoard();
@@ -28,7 +28,7 @@ public:
     void resetBoard();
     void resetCursor();
     
-    void recievedMoveEvent(InputSource&, BoardDirection);
+    void recievedMoveEvent(InputSource&, BoardDirection, BoardPositionState);
     inline virtual void receivedClearEvent(InputSource&) { resetBoard(); };
     
 protected:

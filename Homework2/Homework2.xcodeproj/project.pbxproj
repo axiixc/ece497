@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B355A3EB17E6A0D800D09E08 /* gpio-utils.c in Sources */ = {isa = PBXBuildFile; fileRef = B355A3E917E6A0D800D09E08 /* gpio-utils.c */; };
+		B309349317F1468F008CFBAC /* gpio-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B309349117F1468F008CFBAC /* gpio-utils.cpp */; };
+		B309349617F146AC008CFBAC /* i2cbusses.c in Sources */ = {isa = PBXBuildFile; fileRef = B309349417F146AC008CFBAC /* i2cbusses.c */; };
 		B355A3FC17E6B9BC00D09E08 /* BoardWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A3ED17E6B9BC00D09E08 /* BoardWriter.cpp */; };
 		B355A3FD17E6B9BC00D09E08 /* BoardWriterConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A3EF17E6B9BC00D09E08 /* BoardWriterConsole.cpp */; };
 		B355A3FE17E6B9BC00D09E08 /* ConsoleSupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A3F117E6B9BC00D09E08 /* ConsoleSupport.cpp */; };
@@ -33,8 +34,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B355A3E917E6A0D800D09E08 /* gpio-utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "gpio-utils.c"; path = "../Exercises/gpio/gpio-utils.c"; sourceTree = "<group>"; };
-		B355A3EA17E6A0D800D09E08 /* gpio-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gpio-utils.h"; path = "../Exercises/gpio/gpio-utils.h"; sourceTree = "<group>"; };
+		B309349117F1468F008CFBAC /* gpio-utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gpio-utils.cpp"; path = "Homework2/gpio-utils.cpp"; sourceTree = "<group>"; };
+		B309349217F1468F008CFBAC /* gpio-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gpio-utils.h"; path = "Homework2/gpio-utils.h"; sourceTree = "<group>"; };
+		B309349417F146AC008CFBAC /* i2cbusses.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = i2cbusses.c; path = Homework2/i2cbusses.c; sourceTree = "<group>"; };
+		B309349517F146AC008CFBAC /* i2cbusses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = i2cbusses.h; path = Homework2/i2cbusses.h; sourceTree = "<group>"; };
+		B309349817F1485A008CFBAC /* i2c-dev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "i2c-dev.h"; path = "Homework2/i2c-dev.h"; sourceTree = "<group>"; };
 		B355A3EC17E6B9BC00D09E08 /* BoardTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoardTypes.h; path = Homework2/BoardTypes.h; sourceTree = SOURCE_ROOT; };
 		B355A3ED17E6B9BC00D09E08 /* BoardWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BoardWriter.cpp; path = Homework2/BoardWriter.cpp; sourceTree = SOURCE_ROOT; };
 		B355A3EE17E6B9BC00D09E08 /* BoardWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoardWriter.h; path = Homework2/BoardWriter.h; sourceTree = SOURCE_ROOT; };
@@ -72,8 +76,11 @@
 		B355A3E817E6A0B900D09E08 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				B355A3E917E6A0D800D09E08 /* gpio-utils.c */,
-				B355A3EA17E6A0D800D09E08 /* gpio-utils.h */,
+				B309349117F1468F008CFBAC /* gpio-utils.cpp */,
+				B309349217F1468F008CFBAC /* gpio-utils.h */,
+				B309349417F146AC008CFBAC /* i2cbusses.c */,
+				B309349517F146AC008CFBAC /* i2cbusses.h */,
+				B309349817F1485A008CFBAC /* i2c-dev.h */,
 				B3F2141617E50B0500ED5F22 /* libncurses.dylib */,
 			);
 			name = Dependencies;
@@ -174,11 +181,12 @@
 			files = (
 				B355A3FD17E6B9BC00D09E08 /* BoardWriterConsole.cpp in Sources */,
 				B355A3FC17E6B9BC00D09E08 /* BoardWriter.cpp in Sources */,
+				B309349317F1468F008CFBAC /* gpio-utils.cpp in Sources */,
 				B355A40C17E6C0DE00D09E08 /* BoardWriterGPIO.cpp in Sources */,
 				B355A40117E6B9BC00D09E08 /* InputSourceGPIO.cpp in Sources */,
+				B309349617F146AC008CFBAC /* i2cbusses.c in Sources */,
 				B355A3FE17E6B9BC00D09E08 /* ConsoleSupport.cpp in Sources */,
 				B355A40317E6B9BC00D09E08 /* main.cpp in Sources */,
-				B355A3EB17E6A0D800D09E08 /* gpio-utils.c in Sources */,
 				B355A40017E6B9BC00D09E08 /* InputSource.cpp in Sources */,
 				B355A40217E6B9BC00D09E08 /* InputSourceKeyboard.cpp in Sources */,
 				B355A3FF17E6B9BC00D09E08 /* CursorPosition.cpp in Sources */,

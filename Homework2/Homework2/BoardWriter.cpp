@@ -36,14 +36,14 @@ void BoardWriter::resetCursor()
     updateDisplay();
 }
 
-void BoardWriter::recievedMoveEvent(InputSource& inputSource, BoardDirection direction)
+void BoardWriter::recievedMoveEvent(InputSource& inputSource, BoardDirection direction, BoardPositionState writeState)
 {
     CursorPosition newPosition = m_cursorPosition.move(direction);
-    if (!newPosition.isInsideBounds(m_data.size()))
+    if (!newPosition.isInsideBounds(static_cast<int>(m_data.size())))
         return;
     
     m_cursorPosition = newPosition;
-    m_data[m_cursorPosition.y()][m_cursorPosition.x()] = BoardPositionStateHigh;
+    m_data[m_cursorPosition.y()][m_cursorPosition.x()] = writeState;
     
     updateDisplay();
 }

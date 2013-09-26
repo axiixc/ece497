@@ -12,15 +12,29 @@
 #include "InputSourceKeyboard.h"
 
 #include <stdio.h>
-#include <string.h>
+#include <string>
+
+static std::string const IOSourceKeyboard = "keyboard";
 
 int main(int argc, const char **argv)
 {
-    if (argc == 2 && strncmp("--keyboard", argv[1], strlen("--keyboard")) == 0)
-        InputSource::create<InputSourceKeyboard>(BoardWriter::create<BoardWriterConsole>()).startRecievingInputEvents();
-    else
-        InputSource::create<InputSourceGPIO>(BoardWriter::create<BoardWriterGPIO>()).startRecievingInputEvents();
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage %s <input = keyboard|gpio> <output = keyboard|gpio>\n", argv[0]);
+        return -1;
+    }
     
+    std::string boardWriterType(argv[1]);
+    BoardWriter& boardWriter = (boardWriterType.compare(IOSourceKeyboard) == 0) ?
+        BoardWriter::create<BoardWriterConsole>() :
+        BoardWriter::create<BoardWriterGPIO>();
+    
+    std::string inputSourceType(argv[2]);
+    InputSource& inputSource = (inputSourceType.compare(IOSourceKeyboard) == 0) ?
+        InputSource::create<InputSourceKeyboard>(boardWriter) :
+        InputSource::create<InputSourceGPIO>(boardWriter);
+    
+    inputSource.startRecievingInputEvents();
     return 0;
 }
 

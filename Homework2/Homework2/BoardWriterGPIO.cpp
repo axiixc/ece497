@@ -9,63 +9,48 @@
 #include "BoardWriterGPIO.h"
 
 #include "gpio-utils.h"
+#include "i2cbusses.h"
+#include "i2c-dev.h"
+#include "stdlib.h"
 #include "stdio.h"
-
-static unsigned const GPIOPinInvalid = 0;
-static unsigned const GPIOPinNorth = 60;
-static unsigned const GPIOPinEast = 50;
-static unsigned const GPIOPinSouth = 51;
-static unsigned const GPIOPinWest = 2;
-
-static unsigned GPIOPins[] = { GPIOPinNorth, GPIOPinEast, GPIOPinSouth, GPIOPinWest };
-
-static inline unsigned translateDirectionToPin(BoardDirection direction)
-{
-    switch (direction)
-    {
-        case BoardDirectionNorth: return GPIOPinNorth;
-        case BoardDirectionEast: return GPIOPinEast;
-        case BoardDirectionSouth: return GPIOPinSouth;
-        case BoardDirectionWest: return GPIOPinWest;
-        default: return GPIOPinInvalid;
-    }
-}
+#include "string.h"
 
 BoardWriterGPIO::BoardWriterGPIO()
 : BoardWriter()
 {
-    for (unsigned idx = 0; idx < 4; ++idx)
-    {
-        gpio_export(GPIOPins[idx]);
-        gpio_set_dir(GPIOPins[idx], "out");
-    }
+    char filename[200];
+    m_i2cDevice = open_i2c_dev(lookup_i2c_bus("1"), filename, 200, 0);
     
-    clearAllLEDs();
-}
-
-void BoardWriterGPIO::recievedMoveEvent(InputSource& inputSource, BoardDirection direction)
-{
-    clearAllLEDs();
+    set_slave_addr(m_i2cDevice, parse_i2c_address("0x70"), 0);
     
-    unsigned pin = translateDirectionToPin(direction);
-    if (pin != GPIOPinInvalid)
-        turnOnLED(pin);
-    else
-        fprintf(stderr, "Invalid board direction, something is wrong?!\n");
+    i2c_smbus_write_byte(m_i2cDevice, 0x21);
+    i2c_smbus_write_byte(m_i2cDevice, 0x81);
+    i2c_smbus_write_byte(m_i2cDevice, 0xe7);
 }
 
 void BoardWriterGPIO::clearAllLEDs()
 {
-    for (unsigned idx = 0; idx < 4; ++idx)
-        gpio_set_value(GPIOPins[idx], false);
-}
-
-void BoardWriterGPIO::turnOnLED(unsigned pin)
-{
-    gpio_set_value(pin, true);
-    fprintf(stderr, "Turn on LED: %u", pin);
 }
 
 void BoardWriterGPIO::updateDisplay()
 {
+    clearAllLEDs();
+    
+    static unsigned numberOfElements = 8;
+    __u16 *board = (__u16*) calloc(numberOfElements, sizeof(__u16));
+    
+    for (int yIdx = 0; yIdx < m_data.size(); ++yIdx)
+    {
+        std::vector<BoardPositionState> row = m_data[yIdx];
+        for (int xIdx = 0; xIdx < row.size(); ++xIdx)
+        {
+            if (row[xIdx] == BoardPositionStateHigh)
+                board[xIdx] = board[xIdx] | (1 << yIdx);
+            if (m_cursorPosition.isPoint(xIdx, yIdx))
+                board[xIdx] = board[xIdx] | (1 << (yIdx + numberOfElements));
+        }
+    }
+    
+    i2c_smbus_write_i2c_block_data(m_i2cDevice, 0x00, 16, (__u8*) board);
+    free(board);
 }

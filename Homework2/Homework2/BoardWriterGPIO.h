@@ -15,12 +15,11 @@ class BoardWriterGPIO : public BoardWriter {
 public:
     BoardWriterGPIO();
     
-    void recievedMoveEvent(InputSource&, BoardDirection);
-    
 protected:
     virtual void updateDisplay();
     void clearAllLEDs();
-    void turnOnLED(unsigned);
+    
+    int m_i2cDevice;
 };
 
 #endif /* BoardWriterGPIO_h */

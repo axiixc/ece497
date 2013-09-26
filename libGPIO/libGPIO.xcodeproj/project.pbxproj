@@ -6,8 +6,15 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B355A41F17E7864E00D09E08 /* Pin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B355A41D17E7864E00D09E08 /* Pin.cpp */; };
+		B355A42017E7864E00D09E08 /* Pin.h in Headers */ = {isa = PBXBuildFile; fileRef = B355A41E17E7864E00D09E08 /* Pin.h */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B355A41617E7860900D09E08 /* liblibGPIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibGPIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B355A41D17E7864E00D09E08 /* Pin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pin.cpp; sourceTree = "<group>"; };
+		B355A41E17E7864E00D09E08 /* Pin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pin.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -24,6 +31,8 @@
 		B355A40D17E7860900D09E08 = {
 			isa = PBXGroup;
 			children = (
+				B355A41D17E7864E00D09E08 /* Pin.cpp */,
+				B355A41E17E7864E00D09E08 /* Pin.h */,
 				B355A41717E7860900D09E08 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +52,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B355A42017E7864E00D09E08 /* Pin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +107,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B355A41F17E7864E00D09E08 /* Pin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

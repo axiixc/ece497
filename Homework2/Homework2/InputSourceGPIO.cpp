@@ -67,6 +67,7 @@ void InputSourceGPIO::turnRunLoop()
     while (processingEvents)
         performPoll();
     performPollTeardown();
+    exit(0);
 }
 
 void InputSourceGPIO::performPollSetup()
@@ -123,7 +124,7 @@ void InputSourceGPIO::performPoll()
         
         // NOTE: Off-by-one between fdarray and GPIOPins, swap stdin to pos 4 to fix
         fprintf(stderr, "Pushed pin %u\n", GPIOPins[idx-1]);
-        m_delegate.recievedMoveEvent(*this, translatePinToDirection(GPIOPins[idx-1]));
+        m_delegate.recievedMoveEvent(*this, translatePinToDirection(GPIOPins[idx-1]), BoardPositionStateHigh);
     }
 }
 

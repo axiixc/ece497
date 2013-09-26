@@ -19,13 +19,14 @@ void InputSourceDelegateDuplexer::receivedClearEvent(InputSource& inputSource)
         if (*listener) (*listener)->receivedClearEvent(inputSource);
 }
 
-void InputSourceDelegateDuplexer::recievedMoveEvent(InputSource& inputSource, BoardDirection direction)
+void InputSourceDelegateDuplexer::recievedMoveEvent(InputSource& inputSource, BoardDirection direction, BoardPositionState writeState)
 {
     for (std::vector<InputSourceDelegate*>::iterator listener = m_listeners.begin(); listener != m_listeners.end(); ++listener)
-        if (*listener) (*listener)->recievedMoveEvent(inputSource, direction);
+        if (*listener) (*listener)->recievedMoveEvent(inputSource, direction, writeState);
 }
 
 InputSource::InputSource(InputSourceDelegate& delegate)
 : m_delegate(delegate)
+, m_writeState(BoardPositionStateHigh)
 {
 }

@@ -23,12 +23,12 @@ void InputSourceKeyboard::startRecievingInputEvents()
     {
         switch (key)
         {
-            case 'w': m_delegate.recievedMoveEvent(*this, BoardDirectionNorth); break;
-            case 's': m_delegate.recievedMoveEvent(*this, BoardDirectionSouth); break;
-            case 'a': m_delegate.recievedMoveEvent(*this, BoardDirectionWest); break;
-            case 'd': m_delegate.recievedMoveEvent(*this, BoardDirectionEast); break;
-            case 'q':
-            case 'e': m_delegate.receivedClearEvent(*this); break;
+            case 'w': m_delegate.recievedMoveEvent(*this, BoardDirectionNorth, m_writeState); break;
+            case 's': m_delegate.recievedMoveEvent(*this, BoardDirectionSouth, m_writeState); break;
+            case 'a': m_delegate.recievedMoveEvent(*this, BoardDirectionWest, m_writeState); break;
+            case 'd': m_delegate.recievedMoveEvent(*this, BoardDirectionEast, m_writeState); break;
+            case 'q': m_delegate.receivedClearEvent(*this); break;
+            case 'e': m_writeState = !m_writeState;
             default: break;
         }
     }

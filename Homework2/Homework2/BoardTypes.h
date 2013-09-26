@@ -22,4 +22,9 @@ typedef enum {
     BoardPositionStateHigh = 1,
 } BoardPositionState;
 
+inline BoardPositionState operator!(BoardPositionState state)
+{
+    return state ? BoardPositionStateLow : BoardPositionStateHigh;
+}
+
 #endif /* BoardTypes_h */

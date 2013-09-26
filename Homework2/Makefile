@@ -1,14 +1,31 @@
-CC=g++
-CFLAGS=-std=c++11 -c -Wall
-LDFLAGS=-std=c++11 -lncurses -ltinfo
-SOURCES=$(wildcard Homework2/*.cpp)
-OBJECTS=$(SOURCES:.cpp=.o)
+CXX      = g++
+CC       = gcc
+CPPFLAGS  = -std=c++11 -c -g -Wall
+CFLAGS = -c -g -Wall
+LDFLAGS = -std=c++11 -lncurses -ltinfo -g
+
+BUILD_DIR = build
+SRC_DIR   = Homework2
+
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+CSOURCES = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS = $(SOURCES:.cpp=.o) $(CSOURCES:.c=.o)
+
 EXECUTABLE=hw2
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+				$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+$(BUILD_DIR)/%.o: %.cpp
+				$(CXX) $(CPPFLAGS) $< -o $@
+
+$(BUILD_DIR)/%.o: %.c
+				$(CC) $(CFLAGS) $(TOOLS_CFLAGS) $< -o $@
+
+$(BUILD_DIR):
+				mkdir -p $@
+
+clean:
+				rm $(EXECUTABLE) $(OBJECTS)

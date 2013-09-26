@@ -17,7 +17,7 @@ class InputSource;
 
 class InputSourceDelegate {
 public:
-    virtual void recievedMoveEvent(InputSource&, BoardDirection) = 0;
+    virtual void recievedMoveEvent(InputSource&, BoardDirection, BoardPositionState) = 0;
     virtual void receivedClearEvent(InputSource&) = 0;
 };
 
@@ -26,7 +26,7 @@ public:
     InputSourceDelegateDuplexer();
     inline InputSourceDelegate& operator<<(InputSourceDelegate& listener) { m_listeners.push_back(&listener); return listener; };
     
-    virtual void recievedMoveEvent(InputSource&, BoardDirection);
+    virtual void recievedMoveEvent(InputSource&, BoardDirection, BoardPositionState);
     virtual void receivedClearEvent(InputSource&);
     
     std::vector<InputSourceDelegate*> m_listeners;
@@ -34,7 +34,7 @@ public:
 
 class InputSource {
 public:
-    template <class T> static T& create(InputSourceDelegate& delegate)
+    template <class T> static InputSource& create(InputSourceDelegate& delegate)
     {
         return static_cast<T&>(*new T(delegate));
     };
@@ -45,6 +45,7 @@ protected:
     InputSource(InputSourceDelegate&);
     
     InputSourceDelegate& m_delegate;
+    BoardPositionState m_writeState;
 };
 
 #endif /* InputSource_h */
