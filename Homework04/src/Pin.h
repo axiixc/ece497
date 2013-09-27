@@ -53,6 +53,6 @@ inline void Pin::toggleValue()
     return setValue(!value());
 }
 
-}; /* namespcae ECE */
+}; /* namespace ECE */
 
 #endif /* Pin_h */
