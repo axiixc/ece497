@@ -14,7 +14,12 @@ void targetIR()
     int minIndex = 0;
     int i;
     for (i = 0; i < 40; ++i) {
-    	float lightLevel = (read0.value() + read1.value()) / 2;
+    	
+    	int rightValue = read0.value();
+    	usleep(10000);
+    	int leftValue = read1.value();
+    	
+    	float lightLevel = (rightValue + leftValue) / 2;
     	if(lightLevel < min) {
     		min = lightLevel;
     		minIndex = i;
