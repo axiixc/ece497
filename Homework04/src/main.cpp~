@@ -27,7 +27,7 @@ void do360()
 	
     motor.kill();
     
-    fprintf(stderr, "Lowest light level(%.f) at: %u\n", min, minIndex);
+    fprintf(stderr, "Lowest light level(%.f) at: %u", min, minIndex);
 }
 
 int main(int argc, char *argv[])
