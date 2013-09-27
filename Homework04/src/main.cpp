@@ -1,9 +1,10 @@
 #include "Motor.h"
 #include "AnalogInput.h"
 #include <cfloat>
+#include <unistd.h>
 
 using namespace ECE;
-void do360()
+void targetIR()
 {
     Motor &motor = *new Motor(30, 31, 48, 51);
     AnalogInput &read0 = *new AnalogInput(0);
@@ -30,16 +31,28 @@ void do360()
     fprintf(stderr, "Lowest light level(%.f) at: %u\n", min, minIndex);
 }
 
+void houndIR()
+{
+	Motor &motor = *new Motor(30, 31, 48, 51);
+    AnalogInput &read0 = *new AnalogInput(0);
+    AnalogInput &read1 = *new AnalogInput(1);
+    while(1) {
+    	int rightValue = read0.value();
+    	usleep(10000);
+    	int leftValue = read1.value();
+    	fprintf(stderr, "Right: %d, Left: %d\n", rightValue, leftValue);
+    	if(rightValue > leftValue) motor.rotate(Motor::Clockwise);
+    	else motor.rotate(Motor::Anticlockwise);
+    }
+}
 int main(int argc, char *argv[])
 {
     Pin &trigger = *new Pin(3, Pin::DirectionIn);
-    
     AnalogInput::initialize();
-    for (;;)
-    {
-        while (trigger.value() != Pin::ValueLow);
-        do360();
-    }
+    
+    while (trigger.value() != Pin::ValueLow);
+    targetIR();
+    houndIR();
 
     return 0;
 }

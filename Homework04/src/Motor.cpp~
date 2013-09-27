@@ -41,7 +41,7 @@ void Motor::kill()
 
 void Motor::writePins(const Pin::Value *values)
 {
-    //fprintf(stderr, "-> %d %d %d %d\n", values[0], values[1], values[2], values[3]);
+    fprintf(stderr, "-> %d %d %d %d\n", values[0], values[1], values[2], values[3]);
 
     m_pin0.setValue(values[0]);
     m_pin1.setValue(values[1]);
