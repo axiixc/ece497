@@ -28,9 +28,7 @@ will begin spinning anticlockwise. should it be detected by the left sensor, the
 
 Bonus
 ------
-As a bonus, we added two command line arguments. 
-
-The first argument is either a 0 or a 1. If 0,
+As a bonus, we added two command line arguments. The first argument is either a 0 or a 1. If 0,
 when the program enters tracking mode it will follow the IR source. If 1, it will avoid the source.
 
 The second argument specifies a deadzone. If the difference between the two analog value detected
