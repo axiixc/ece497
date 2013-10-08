@@ -1,0 +1,39 @@
+I couldn't find any of the `CONFIG_ARCH*` or `CONFIG_MACH*` options from the chapter listing in my build of the kernel.
+
+~~~ Configured Kernel Listing ~~~
+
+#
+# Makefile for the linux kernel.
+#
+
+# Common support
+obj-y := id.o io.o control.o mux.o devices.o fb.o serial.o gpmc.o timer.o pm.o \
+	 common.o gpio.o dma.o wd_timer.o display.o i2c.o hdq1w.o omap_hwmod.o \
+	 omap_device.o sram.o
+
+omap-2-3-common				= irq.o
+hwmod-common				= omap_hwmod.o \
+						omap_hwmod_common_data.o
+clock-common				= clock.o clock_common_data.o \
+						clkt_dpll.o clkt_clksel.o
+secure-common				= omap-smc.o omap-secure.o
+
+obj-$(CONFIG_ARCH_OMAP2) += $(omap-2-3-common) $(hwmod-common)
+obj-$(CONFIG_ARCH_OMAP3) += $(omap-2-3-common) $(hwmod-common) $(secure-common)
+obj-$(CONFIG_ARCH_OMAP4) += prm44xx.o $(hwmod-common) $(secure-common)
+obj-$(CONFIG_SOC_AM33XX) += irq.o $(hwmod-common)
+obj-$(CONFIG_SOC_OMAP5)	 += prm44xx.o $(hwmod-common) $(secure-common)
+...
+
+~~~ Chapter Listing ~~~
+
+#
+# Makefile for the linux kernel.
+#
+
+obj-y   += common.o common-pci.o
+
+obj-$(CONFIG_ARCH_IXDP4XX)    += ixdp425-pci.o ixdp425-setup.o
+obj-$(CONFIG_MACH_IXDPG425)    += ixdpg425-pci.o coyote-setup.o
+obj-$(CONFIG_ARCH_ADI_COYOTE)  += coyote-pci.o coyote-setup.o
+obj-$(CONFIG_MACH_GTWX5715)    += gtwx5715-pci.o gtwx5715-setup.o

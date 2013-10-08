@@ -1,0 +1,55 @@
+The biggest difference I saw was a lot more options appear to be included in my build of the kernel. Individual `config` blocks also appear to be setting more values.
+
+~~~ Configured Kernel Listing ~~~
+
+source "init/Kconfig"
+
+source "kernel/Kconfig.freezer"
+
+menu "System Type"
+
+config MMU
+	bool "MMU-based Paged Memory Management Support"
+	default y
+	help
+		Select if you want MMU-based virtualised addressing space
+		support by paged memory management. If unsure, say 'Y'.
+
+#
+# The "ARM system type" choice list is ordered alphabetically by option
+# text.  Please add new entries in the option alphabetic order.
+#
+choice
+	prompt "ARM system type"
+	default ARCH_MULTIPLATFORM
+
+config ARCH_MULTIPLATFORM
+	bool "Allow multiple platforms to be selected"
+	depends on MMU
+	select ARM_PATCH_PHYS_VIRT
+	select AUTO_ZRELADDR
+	select COMMON_CLK
+	select MULTI_IRQ_HANDLER
+	select SPARSE_IRQ
+	select USE_OF
+
+...
+
+source "arch/arm/mach-mvebu/Kconfig"
+
+~~~ Chapter Listing ~~~
+
+source "init/Kconfig"
+menu "System Type"
+
+choice
+				prompt "ARM system type"
+				default ARCH_RPC
+config ARCH_CLPS7500
+				bool "Cirrus-CL-PS7500FE"
+config ARCH_CLPS711X
+				bool "CLPS711x/EP721x-based"
+
+...
+
+source "arch/arm/mach-ixp4xx/Kconfig"
