@@ -1,7 +1,12 @@
-#define GPIO_PIN_INA 30 // 0:30
-#define GPIO_PIN_INB 31 // 0:31
+#define GPIO_PIN_INA 17 // 1:23
+#define GPIO_PIN_INB 15 // 0:24
 #define GPIO_PIN_OUTA 16 // 1:48
 #define GPIO_PIN_OUTB 3 // 0:3
+
+#define USR0 21
+#define USR1 22
+#define USR2 23
+#define USR3 24
 
 #define GPIO0_START_ADDR 0x44e07000
 #define GPIO0_END_ADDR 0x44e09000
@@ -65,9 +70,6 @@ int main()
     volatile unsigned int *gpio1_setdataout_addr;
     volatile unsigned int *gpio1_cleardataout_addr;
 
-    // Set the signal callback for Ctrl-C
-    signal(SIGINT, signal_handler);
-
     int fd1 = open("/dev/mem", O_RDWR);
 
     printf("Mapping %X - %X (size: %X)\n", GPIO1_START_ADDR, GPIO1_END_ADDR,
@@ -86,19 +88,23 @@ int main()
         exit(1);
     }
 
-#define ReadGPIO(_bus, _pin) (*(_bus##_datain) & _pin)
-#define SetGPIOHigh(_bus, _pin) (*(_bus##_setdataout_addr) = _pin)
-#define SetGPIOLow(_bus, _pin) (*(_bus##_cleardataout_addr) = _pin)
+#define ReadGPIO(_bus, _pin) (*(_bus##_datain) & (1<<_pin))
+#define SetGPIOHigh(_bus, _pin) (*(_bus##_setdataout_addr) = (1<<_pin))
+#define SetGPIOLow(_bus, _pin) (*(_bus##_cleardataout_addr) = (1<<_pin))
+#define SetGPIOToOutput(_bus, _pin) (*(_bus##_oe_addr) &= (1<<_pin))
+
+    SetGPIOToOutput(gpio1, USR0);
+    SetGPIOToOutput(gpio1, USR1);
 
     while (keepgoing)
     {
         if (ReadGPIO(gpio1, GPIO_PIN_INA))
-            SetGPIOHigh(gpio0, GPIO_PIN_OUTA);
-        else SetGPIOLow(gpio0, GPIO_PIN_OUTA);
+            SetGPIOHigh(gpio1, USR0);
+        else SetGPIOLow(gpio1, USR0);
 
-        if (ReadGPIO(gpio0, GPIO_PIN_INB))
-            SetGPIOHigh(gpio0, GPIO_PIN_OUTB);
-        else SetGPIOLow(gpio0, GPIO_PIN_OUTB);
+        if (!ReadGPIO(gpio0, GPIO_PIN_INB))
+            SetGPIOHigh(gpio1, USR1);
+        else SetGPIOLow(gpio1, USR1);
     }
 
     return 0;
