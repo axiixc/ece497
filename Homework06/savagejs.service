@@ -1,0 +1,11 @@
+[Unit]
+Description=James Savage Server
+ConditionPathExists=|/var/lib/savagejs
+
+[Service]
+Restart=always
+EnvironmentFile=-/etc/default/node
+ExecStart=/usr/bin/node4 /var/lib/savagejs/boneserver.js
+
+[Install]
+WantedBy=multi-user.target
