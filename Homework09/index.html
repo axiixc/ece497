@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>James Savage, ECE 497, Homework 9</title>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="matrix.js"></script>
+	<script>
+		window.addEventListener('load', function()
+		{
+			function translateBoardStateToMatrixColor(boardState)
+			{
+				return (boardState & BoardController.STATE_GREEN ?
+MatrixIOController.COLOR_GREEN : MatrixIOController.COLOR_RED)
+			}
+
+			applicationDelegate = {
+				matrixDataDidChange: function()
+				{
+					boardController.configureBoard(function(row, col, state) {
+						return matrixController.getMatrixColorEnabledAtPoint(row, col,
+							translateBoardStateToMatrixColor(state))
+					})
+				},
+
+				stateDidChange: function(row, col, state, enabled)
+				{
+					matrixController.setMatrixColorEnabledAtPoint(row, col,
+						translateBoardStateToMatrixColor(state), enabled)
+				}
+			}
+
+			boardController = new BoardController(applicationDelegate, document.querySelector('#container'))
+			matrixController = new MatrixIOController(applicationDelegate)
+		})
+	</script>
+	<style>
+		body { background: black; text-align: center; }
+		table { border-spacing: 5px; margin: 0 auto; }
+		td { width: 50px; height: 50px; padding: 0; background: #333; border-radius: 10%; }
+		td.green { background: lime; }
+		td.red { background: red; }
+		td.green.red { background: orange; }
+		td svg { display: block; width: 75%; height: 75%; z-index:-1; margin: auto; }
+		svg * { cursor: pointer; }
+		.green { fill: lime; }
+		.green.off { fill: #2a3d28; }
+		.red { fill: red; }
+		.red.off { fill: #3b282a; }
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<input type="button" value="Reload Matrix" onclick="matrixController.reloadMatrix()">
+</body>
+</html>
