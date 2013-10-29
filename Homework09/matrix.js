@@ -152,7 +152,13 @@ MatrixIOController.prototype = {
         this.socket.on('reconnect_failed', function()
             { console.log('Reconnect Failed') })
 
-        this.socket.on('matrix', this.setMatrix.bind(this))
+        this.socket.on('matrix', (function(data) {
+            this.matrixData = data.split(' ').map(function(row, idx) {
+                return parseInt(row, 16)
+            })
+
+            this.delegate && this.delegate.matrixDataDidChange()
+        }).bind(this))
         this.reloadMatrix()
     },
 
@@ -163,11 +169,15 @@ MatrixIOController.prototype = {
 
     setMatrix: function(data)
     {
-        this.matrixData = data.split(' ').map(function(row, idx) {
-            return parseInt(row, 16)
-        })
+        this.matrixData = data
 
-        this.delegate && this.delegate.matrixDataDidChange()
+        for (var rowIdx = 0; rowIdx < this.matrixData.length; ++rowIdx)
+            this.sendRowUpdate(rowIdx)
+    },
+
+    getMatrix: function()
+    {
+        return JSON.parse(JSON.stringify(this.matrixData))
     },
 
     getMatrixColorEnabledAtPoint: function(i, j, color)
@@ -184,11 +194,18 @@ MatrixIOController.prototype = {
         var rowIdx = this.computeRowIndex(i, color),
             oldRowData = this.matrixData[rowIdx],
             rowColorMask = 1 << j,
-            newRowData = (enabled ? oldRowData | rowColorMask : oldRowData & ~rowColorMask),
+            newRowData = (enabled ? oldRowData | rowColorMask : oldRowData & ~rowColorMask)
+
+        this.matrixData[rowIdx] = newRowData
+        this.sendRowUpdate(rowIdx)
+    },
+
+    sendRowUpdate: function(rowIdx)
+    {
+        var newRowData = this.matrixData[rowIdx],
             newRowHex = '0x' + newRowData.toString(16),
             i2cSetMessage = { i2cNum: this.i2cAddress, i: rowIdx, disp: newRowHex }
 
-        this.matrixData[rowIdx] = newRowData
         this.socket.emit('i2cset', i2cSetMessage)
     },
 
@@ -196,4 +213,52 @@ MatrixIOController.prototype = {
     {
         return (color === MatrixIOController.COLOR_GREEN ? i * 2 : i * 2 + 1)
     }
+}
+
+function pseudoUUID()
+{
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+}
+
+Snapshot = function(uuid)
+{
+    this.uuid = uuid || pseudoUUID()
+}
+
+Snapshot.allSnapshots = function()
+{
+    var numberOfSnapshots = localStorage.length,
+        snapshots = []
+
+    for (var idx = 0; idx < numberOfSnapshots; ++idx)
+        snapshots.push(new Snapshot(localStorage.key(idx)))
+
+    return snapshots
+}
+
+Snapshot.clearAllSnapshots = function()
+{
+    Snapshot.allSnapshots().forEach(function(snapshot) {
+        snapshot.remove()
+    })
+}
+
+Snapshot.prototype = {
+    save: function(obj)
+    {
+        localStorage.setItem(this.uuid, JSON.stringify(obj))
+    },
+
+    get: function()
+    {
+        return JSON.parse(localStorage.getItem(this.uuid))
+    },
+
+    remove: function()
+    {
+        localStorage.removeItem(this.uuid)
+    },
 }
